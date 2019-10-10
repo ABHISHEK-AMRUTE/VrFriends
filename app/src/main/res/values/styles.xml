@@ -7,5 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="Highlighted_nav_text">
 
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+
+    </style>
+    <style name="simple_nav_text">
+
+        <item name="colorPrimary">#FFFFFF</item>
+
+    </style>
 </resources>

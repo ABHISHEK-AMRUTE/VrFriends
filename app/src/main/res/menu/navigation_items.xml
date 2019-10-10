@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+   android:title="Friends"
+    android:icon="@drawable/find"
+    android:id="@+id/find_friends"></item>
+    <item
+        android:title="Home"
+        android:icon="@drawable/home"
+        android:id="@+id/home"></item>
+    <item
+       android:title="Profile"
+        android:icon="@drawable/profile"
+        android:id="@+id/profile"></item>
+</menu>
