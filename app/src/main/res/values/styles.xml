@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -7,14 +7,15 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-    <style name="Highlighted_nav_text">
-
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
+    <style name="Highlighted_nav_text" >
+        <item name="android:iconTint" tools:targetApi="o">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
 
     </style>
     <style name="simple_nav_text">
 
-        <item name="colorPrimary">#FFFFFF</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:iconTint" tools:targetApi="o">#FFFFFF</item>
 
     </style>
 </resources>
