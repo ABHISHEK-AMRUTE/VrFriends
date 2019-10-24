@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView mBottomNav;
@@ -48,27 +49,33 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+
+
+
+
+
+
+                String name = user.getDisplayName();
+                String email = user.getEmail();
+                Uri photoUrl = user.getPhotoUrl();
+                Toast.makeText(this, "Name: "+name+" Email : "+email, Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
+        } else {
+            startActivity(new Intent(this,login_firebase.class));
+            finish();
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
-            Toast.makeText(this, "Name: "+name+" Email : "+email, Toast.LENGTH_SHORT).show();
-            // Check if user's email is verified
-            boolean emailVerified = user.isEmailVerified();
 
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-            String uid = user.getUid();
-        } else {
-            startActivity(new Intent(this,login_firebase.class));
-            finish();
-        }
     }
 }
