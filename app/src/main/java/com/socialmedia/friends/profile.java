@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 
 public class profile extends Fragment {
@@ -57,12 +58,7 @@ public class profile extends Fragment {
         int loader =R.drawable.profile;
 
         String image_url = "https://api.androidhive.info/images/sample.jpg";
-
-
-        ImageLoader imgLoader = new ImageLoader(getContext());
-
-
-        imgLoader.DisplayImage(image_url, loader, imageView);
+        Picasso.get().load(image_url).into(imageView);
 
         name_f.setText(name);
         email_f.setText(email);
