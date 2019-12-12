@@ -12,4 +12,12 @@
         android:textAllCaps="true"
         android:textColor="#000000"
         android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/friends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="TextView"
+        android:textSize="18sp" />
 </LinearLayout>
