@@ -1,6 +1,7 @@
 package com.socialmedia.friends;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,39 +24,52 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 
 public class home extends Fragment {
-    TextView txt;
+    home_adapter madapter;
+    RecyclerView.LayoutManager layoutManager;
+    ArrayList<user_info_class> examplelist =new ArrayList<user_info_class>();
+
     Context context;
     static int count=9999999;
     String text = "Frineds list : \n";
+
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference server = FirebaseDatabase.getInstance().getReference();
-   DatabaseReference q =server.child("vrfriends-f30c2");
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         server.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                examplelist.clear();
                 for (DataSnapshot childl : dataSnapshot.getChildren()) {
 
+                      if(!childl.child("data").child("uid").getValue().equals("nulll")) {
+                          if(childl.child("data").child("uid").getValue().toString().equals(user.getUid())) {
+                              if(!childl.child("frined_count").child("count").getValue().equals(null))
+                              count = Integer.parseInt(childl.child("frined_count").child("count").getValue().toString());
+                              else
+                                  count =0;
+                              for(int x=0;x<count;x++) {
+                                  String st = "friend";
+                                  st = st + x;
+                                  String temp = childl.child("friend").child(st).getValue().toString();
+                                 // text = text + "NAME : " + childl.child("friend").child(temp).getValue().toString() + "\n";
+                                  examplelist.add(new user_info_class(childl.child("friend").child(temp).getValue().toString(),"scsc",childl.child("friend").child(st).getValue().toString()));
+                                  madapter.notifyDataSetChanged();
+                              }
 
-                    if (childl.child("data").child("uid").getValue().toString().equals(user.getUid())) {
-                        count = Integer.parseInt(childl.child("frined_count").child("count").getValue().toString());
-                        for(int x=0;x<count;x++) {
-                            String st = "friend";
-                            st =st +x;
-                            String temp = childl.child("friend").child(st).getValue().toString();
-                            text = text + "NAME : " + childl.child("friend").child(temp).getValue().toString() + "\n";
-                        }
-
-                    }
+                      }
+                      }
 
 
 
                 }
-                txt.setText(text);
+
                 Toast.makeText(context,""+count,Toast.LENGTH_LONG).show();
                  //txt.setText(text);
             }
@@ -69,10 +86,27 @@ public class home extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        RecyclerView recyclerView = getView().findViewById(R.id.recyler);
 
-        txt =view.findViewById(R.id.friends);
+        recyclerView.setHasFixedSize(true);
 
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(layoutManager);
+        madapter = new home_adapter(examplelist);
+        recyclerView.setAdapter(madapter);
+        //txt =view.findViewById(R.id.friends);
 
+             madapter.setonitemclickedlistner(new home_adapter.OnitemClickListner() {
+                 @Override
+                 public void onItemClick(int position) {
+                     Toast.makeText(context,"Clicked_on_friend",Toast.LENGTH_LONG).show();
+                     Intent intent = new Intent(context,chat.class);
+                     intent.putExtra("name_of_frined",examplelist.get(position).getName());
+                     intent.putExtra("uid_of_frined",examplelist.get(position).getUid());
+                     startActivity(intent);
+                 }
+             });
 
     }
 

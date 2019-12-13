@@ -40,13 +40,13 @@ public class home_adapter extends RecyclerView.Adapter<home_adapter.Exampleviewh
     }
     public static  class Exampleviewholder extends RecyclerView.ViewHolder
     {
-        public TextView owner_name;
+        public TextView owner_name,uid_field;
 
 
         public Exampleviewholder(@NonNull final View itemView, final home_adapter.OnitemClickListner listner) {
             super(itemView);
             owner_name=itemView.findViewById(R.id.Name);
-
+            uid_field = itemView.findViewById(R.id.uid);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,7 +75,7 @@ public class home_adapter extends RecyclerView.Adapter<home_adapter.Exampleviewh
     public home_adapter.Exampleviewholder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
 
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.findfriend_adapter_ele_layout,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_adapter_layout,parent,false);
         home_adapter.Exampleviewholder evh= new home_adapter.Exampleviewholder(v,mlistner);
         return  evh;
     }
@@ -87,6 +87,7 @@ public class home_adapter extends RecyclerView.Adapter<home_adapter.Exampleviewh
         // holder.featured_image.setImageResource(R.drawable.home);
 //        Picasso.get().load( "https://api.androidhive.info/images/sample.jpg").into(holder.featured_image);
         holder.owner_name.setText(currentitem.getName());
+        holder.uid_field.setText(currentitem.getUid());
         frn_uid = currentitem.getUid();
     }
 

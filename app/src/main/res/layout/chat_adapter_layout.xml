@@ -2,18 +2,17 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
     android:layout_margin="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="8dp"
-    app:cardCornerRadius="6dp"
-    app:cardMaxElevation="10dp">
+    app:cardCornerRadius="5dp"
+    >
 
     <LinearLayout
+        android:id="@+id/linera"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/Name"
@@ -21,10 +20,18 @@
             android:layout_height="wrap_content"
             android:text="TextView" />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FD0E0202" />
+
         <TextView
-            android:id="@+id/uid"
+            android:id="@+id/message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textColor="#FA0A0000"
+            android:textSize="18sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

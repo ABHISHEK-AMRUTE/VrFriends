@@ -91,11 +91,18 @@ public class find_friends extends Fragment {
                frined_count = frined_count + count;
                count= count + 1;
                Toast.makeText(getContext(),""+count,Toast.LENGTH_LONG).show();
+               String t =get_c(user.getUid(),examplelist.get(position).getUid());
+               server.child(t).child("data").child("uid").setValue("nulll");
+               server.child(t).child("data").child("name").setValue("nulll");
+               server.child(t).child("friend").setValue("nulll");
+               server.child(t).child("frined_count").setValue("nulll");
+               server.child(t).child("id").setValue(t);
                server.child(user.getUid()).child("friend").child(frined_count).setValue(examplelist.get(position).getUid());
                server.child(user.getUid()).child("friend").child(examplelist.get(position).getUid()).setValue(examplelist.get(position).getName());
-
+               server.child(t).child("chat_string").setValue("nulll");
                server.child(user.getUid()).child("frined_count").child("count").setValue(count);
                frined_count ="friend";
+               server.child(t).child("start_from").setValue(get_cc(user.getUid(),examplelist.get(position).getUid()));
            }
        });
     }
@@ -111,10 +118,10 @@ public class find_friends extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                     examplelist.clear();
                 for (DataSnapshot childl : dataSnapshot.getChildren()) {
-                    String str =childl.child("data").child("name").getValue().toString();
+                    String str =childl.child("data").child("uid").getValue().toString();
 
-                    if(!str.matches("none")) {
-                        examplelist.add(new user_info_class(str,"scsc",childl.child("data").child("uid").getValue().toString()));
+                    if(!str.matches("nulll")) {
+                        examplelist.add(new user_info_class(childl.child("data").child("name").getValue().toString(),"scsc",str));
                     }
                     madapter.notifyDataSetChanged();
                 }
@@ -129,5 +136,31 @@ public class find_friends extends Fragment {
 
         });
 
+    }
+    public String get_c(String ui, String na)
+    {
+        String chat_st;
+        if(ui.compareTo(na)>0)
+        {
+            chat_st = na + ui;
+        }
+        else
+        {
+            chat_st= ui+na;
+        }
+        return chat_st;
+    }
+    public String get_cc(String ui, String na)
+    {
+        String chat_st;
+        if(ui.compareTo(na)>0)
+        {
+            chat_st = na;
+        }
+        else
+        {
+            chat_st= ui;
+        }
+        return chat_st;
     }
 }
