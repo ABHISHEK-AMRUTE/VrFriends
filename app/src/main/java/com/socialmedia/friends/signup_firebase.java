@@ -1,6 +1,7 @@
 package com.socialmedia.friends;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -30,6 +31,8 @@ public class signup_firebase extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
         setContentView(R.layout.activity_signup_firebase);
 
         initialise();
@@ -121,7 +124,7 @@ public class signup_firebase extends AppCompatActivity {
 
     private void initialise() {
         singup=findViewById(R.id.singup);
-        singin=findViewById(R.id.singup);
+        singin=findViewById(R.id.singin);
         email=findViewById(R.id.email);
         password=findViewById(R.id.password);
         name = findViewById(R.id.name);

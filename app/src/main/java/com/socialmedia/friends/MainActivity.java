@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,14 +35,17 @@ public class MainActivity extends AppCompatActivity {
                 {
 
                     case R.id.profile:
+
                         setfrs= new profile();
 
                         break;
                     case R.id.home:
+
                         setfrs= new home();
 
                         break;
                     case R.id.find_friends:
+
                         setfrs= new find_friends();
                          break;
 

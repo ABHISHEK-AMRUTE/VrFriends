@@ -20,7 +20,7 @@
             android:layout_margin="8dp"
             android:padding="4dp"
             tools:srcCompat="@tools:sample/avatars"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/name"
@@ -28,13 +28,16 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="2dp"
-            android:text="User Name" />
+            android:text="User Name"
+            android:textColor="#000000" />
 
         <Button
             android:id="@+id/send"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Friend +" />
+            android:background="@color/colorPrimary"
+            android:text="Add Friend +"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
