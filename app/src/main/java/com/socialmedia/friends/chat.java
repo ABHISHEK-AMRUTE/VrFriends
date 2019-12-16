@@ -27,8 +27,9 @@ public class chat extends AppCompatActivity {
     DatabaseReference server = FirebaseDatabase.getInstance().getReference();
     String chat_str  = "ruined";
     String startfrom ,other;
-    int turn=0;
-    String chat_content="";
+
+    String startstring="",anotherstring="",startname="",othername="";
+    int sartwith =0;
     int first_who =0;String name,uid;
     ImageView send;
     EditText message;
@@ -59,44 +60,57 @@ public class chat extends AppCompatActivity {
            send.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   if(message.getText().toString().matches(""))
+                   if(message.getText().toString().equals(null))
                    {
-                       Toast.makeText(chat.this,"Message field is empty ",Toast.LENGTH_LONG).show();
+                       Toast.makeText(chat.this,"Message field is empty..",Toast.LENGTH_LONG).show();
                    }
                    else
-                   {
-                       if(chat_content.matches("nulll"))
+                   {  String write = message.getText().toString();
+                      if(startfrom.equals(user.getUid()))
                       {
-
-                           if (startfrom.matches(user.getUid())){
-
-                           chat_content = message.getText().toString();
-
-                           }
-                           else
-                           {
-                                chat_content = "nulll|";
-                                chat_content = chat_content + message.getText().toString();
-                           }
+                         if(startfrom.equals("nulll"))
+                         {
+                            startstring = write;
+                            anotherstring = anotherstring + "|";
+                         }
+                         else if(startstring.charAt(startstring.length()-1)=='|')
+                         {
+                             //insert as it is with | in opposite string
+                             startstring += write;
+                             anotherstring = anotherstring + "|";
+                         }
+                         else
+                         {     startstring = startstring + "~" + write;
+                             if(anotherstring.charAt(anotherstring.length()-1)!='|')
+                             anotherstring = anotherstring + "|";
+                             //insert ~ in the string with | in opposite string
+                         }
+                         server.child(chat_str).child("chat_string"+user.getUid()).setValue(startstring);
+                          server.child(chat_str).child("chat_string"+uid).setValue(anotherstring);
 
                       }
-                        else
-                      {
-                          if(startfrom.matches(user.getUid()))
-                          chat_content = chat_content + "," + message.getText().toString();
-                          else
-                          chat_content = chat_content + "|" + message.getText().toString();
-
-
-
-                      }
-
-                       server.child(chat_str).child("chat_string").setValue(chat_content);
-                        server.child(chat_str).child("start_from").setValue(user.getUid());
+                     else
+                     {
+                         if(anotherstring.charAt(anotherstring.length()-1)=='|')
+                         {
+                             //insert as it is with | in start string
+                             anotherstring = anotherstring + write;
+                             startstring = startstring + "|";
+                         }
+                         else
+                         {
+                             //insert ~ in the string with | in start string
+                             anotherstring = anotherstring + "~" +write;
+                             if(startstring.charAt(startstring.length()-1)!='|')
+                             startstring = startstring + "|";
+                         }
+                         server.child(chat_str).child("chat_string"+user.getUid()).setValue(anotherstring);
+                         server.child(chat_str).child("chat_string"+uid).setValue(startstring);
+                     }
                    }
                }
            });
-
+        Toast.makeText(chat.this,"inside",Toast.LENGTH_LONG).show();
         chat_str = get_c(uid,user.getUid());
         first_who = uid.compareTo(user.getUid());
 
@@ -104,27 +118,32 @@ public class chat extends AppCompatActivity {
         server.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 for(DataSnapshot childl : dataSnapshot.getChildren())
                 {
                  if(childl.child("data").child("name").getValue().toString().matches("nulll"))
                     {   if(childl.child("id").getValue().toString().matches(chat_str))
-                           chat_content = childl.child("chat_string").getValue().toString();
-                           startfrom = childl.child("start_from").getValue().toString();
+                    {  startfrom = childl.child("start_from").getValue().toString();
                            if(startfrom.matches(user.getUid()))
                            {
-                               turn=0;
+                               startstring = childl.child("chat_string"+user.getUid()).getValue().toString();
+                               anotherstring=childl.child("chat_string"+uid).getValue().toString();
+                               startname= user.getDisplayName();
+                               othername= name;
                            }
                            else
                            {
-                               turn=1;
+                               startstring = childl.child("chat_string"+uid).getValue().toString();
+                               anotherstring=childl.child("chat_string"+user.getUid()).getValue().toString();
+                               othername= user.getDisplayName();
+                               startname = name;
                            }
+
                     }
-//                    else
-//                    {
-//                        server.child(chat_str).child("chat_string").setValue("null|");
-//                    }
+                    }
+                    Toast.makeText(chat.this,"contetn loading",Toast.LENGTH_LONG).show();
                     Loadcontent();
-                   turn=0;
+
                 }
             }
 
@@ -137,62 +156,79 @@ public class chat extends AppCompatActivity {
     }
 
     private void Loadcontent() {
-          if(chat_content.equals("nulll"))
-          {  examplelist.clear();
-              Toast.makeText(this,"No talks yet",Toast.LENGTH_LONG).show();
-          }
-          else
-          {
-               examplelist.clear();
-               String temp = "";
-               for(int x=0;x<chat_content.length();x++)
-               {
-                   if(chat_content.charAt(x)=='|')
-                   {   if(temp.matches("nulll"))
-                       {
-                          temp="";
-                          turn++;
-                       }
-                       else
-                        {
-                            if(turn%2==0)
-                                examplelist.add(new chat_content(temp,user.getDisplayName()));
-                            else
-                                examplelist.add(new chat_content(temp,name));
-                           temp="";
-                           turn++;
-                            madapter.notifyDataSetChanged();
-                        }
-                   }
-                   else if(x==chat_content.length()-1)
-                   {   temp = temp +chat_content.charAt(x);
-                       if(turn%2==0)
-                           examplelist.add(new chat_content(temp,user.getDisplayName()));
-                       else
-                           examplelist.add(new chat_content(temp,name));
-                       temp="";
-                       turn++;
-                       madapter.notifyDataSetChanged();
-                   }
-                   else
-                   {   if(chat_content.charAt(x)==',')
+        Toast.makeText(chat.this,"lodaign askmdkas",Toast.LENGTH_LONG).show();
+        examplelist.clear();
+
+       int start_len = startstring.length();
+       int ano_len = anotherstring.length();
+
+       String temp="";
+
+       for(int x=0,y=0;x<start_len;)
+       {
+           if(startstring.charAt(x)=='~')
+           {
+               examplelist.add(new chat_content(temp,startname));
+               madapter.notifyDataSetChanged();
+               x++;
+               temp = "";
+
+           }
+           else if(startstring.charAt(x)=='|')
+           {
+               if(!temp.equals("nulll"))
+               {   examplelist.add(new chat_content(temp,startname));
+                   madapter.notifyDataSetChanged();}
+                   temp="";
+                   x++;
+                  while(y<ano_len)
+                  {
+
+                      if(anotherstring.charAt(y)=='~')
                       {
-                          if(turn%2==0)
-                          examplelist.add(new chat_content(temp,user.getDisplayName()));
-                          else
-                          examplelist.add(new chat_content(temp,name));
-                          temp="";
+                          examplelist.add(new chat_content(temp,othername));
                           madapter.notifyDataSetChanged();
+                          y++;
+                          temp = "";
                       }
-                      else
+                      else if(anotherstring.charAt(y)=='|')
+                      {   examplelist.add(new chat_content(temp,othername));
+                          madapter.notifyDataSetChanged();
+                          temp="";
+                                  y++;
+                         break;
+                      }
+                      else if(y==ano_len-1)
+                      {   temp = temp + anotherstring.charAt(y) ;
+                          if(!temp.equals("nulll"))
+                          {examplelist.add(new chat_content(temp,othername));
+                          madapter.notifyDataSetChanged();}
+                          temp = "";y++;
+                      }
+                      else if(anotherstring.charAt(y)!='|')
                       {
-                       temp = temp +chat_content.charAt(x);
+                          temp = temp + anotherstring.charAt(y) ;
+                          y++;
                       }
-                   }
 
-               }
-          }
+                  }
 
+           }
+           else if(x==start_len-1)
+           {    temp = temp + startstring.charAt(x) ;
+               if(!temp.equals("nulll"))
+               {
+                   examplelist.add(new chat_content(temp,startname));
+               madapter.notifyDataSetChanged();}
+               temp = "";x++;
+           }
+           else if(startstring.charAt(x)!='|')
+           {
+               temp = temp + startstring.charAt(x) ;
+               x++;
+           }
+
+       }
     }
 
 

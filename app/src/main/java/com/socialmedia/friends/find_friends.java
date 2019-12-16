@@ -38,29 +38,6 @@ public class find_friends extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        server.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot childl : dataSnapshot.getChildren()) {
-
-
-                    if (childl.child("data").child("uid").getValue().toString().equals(user.getUid())) {
-                        count = Integer.parseInt(childl.child("frined_count").child("count").getValue().toString());
-
-
-                    }
-
-
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
         return inflater.inflate(R.layout.frame_find_friends,container,false);
     }
     @Override
@@ -90,7 +67,7 @@ public class find_friends extends Fragment {
 
                frined_count = frined_count + count;
                count= count + 1;
-               Toast.makeText(getContext(),""+count,Toast.LENGTH_LONG).show();
+
                String t =get_c(user.getUid(),examplelist.get(position).getUid());
                server.child(t).child("data").child("uid").setValue("nulll");
                server.child(t).child("data").child("name").setValue("nulll");
@@ -99,10 +76,17 @@ public class find_friends extends Fragment {
                server.child(t).child("id").setValue(t);
                server.child(user.getUid()).child("friend").child(frined_count).setValue(examplelist.get(position).getUid());
                server.child(user.getUid()).child("friend").child(examplelist.get(position).getUid()).setValue(examplelist.get(position).getName());
-               server.child(t).child("chat_string").setValue("nulll");
+               if(get_cc(user.getUid(),examplelist.get(position).getUid()).matches(user.getUid())){
+               server.child(t).child("chat_string"+user.getUid()).setValue("nulll");
+                   server.child(t).child("chat_string"+examplelist.get(position).getUid()).setValue(" ");}
+               else{ server.child(t).child("chat_string"+user.getUid()).setValue(" ");
+                   server.child(t).child("chat_string"+examplelist.get(position).getUid()).setValue("nulll");
+
+               }
                server.child(user.getUid()).child("frined_count").child("count").setValue(count);
                frined_count ="friend";
                server.child(t).child("start_from").setValue(get_cc(user.getUid(),examplelist.get(position).getUid()));
+
            }
        });
     }
@@ -113,7 +97,7 @@ public class find_friends extends Fragment {
     public void loadusers()
     {
 
-        server.addValueEventListener(new ValueEventListener() {
+        server.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                     examplelist.clear();
@@ -121,7 +105,10 @@ public class find_friends extends Fragment {
                     String str =childl.child("data").child("uid").getValue().toString();
 
                     if(!str.matches("nulll")) {
-                        examplelist.add(new user_info_class(childl.child("data").child("name").getValue().toString(),"scsc",str));
+                        if(!childl.child("data").child("name").getValue().toString().equals(user.getDisplayName())&&childl.child("friend").exists()) {
+                            if(!childl.child("friend").child(user.getUid()).exists())
+                            examplelist.add(new user_info_class(childl.child("data").child("name").getValue().toString(), "scsc", str));
+                        }
                     }
                     madapter.notifyDataSetChanged();
                 }

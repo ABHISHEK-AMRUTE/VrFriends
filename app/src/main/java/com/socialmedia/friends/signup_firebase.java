@@ -80,16 +80,7 @@ public class signup_firebase extends AppCompatActivity {
                                                         server.child(user.getUid()).child("data").child("name").setValue(name.getText().toString());
                                                         server.child(user.getUid()).child("frined_count").child("count").setValue("0");
                                                         server.child(user.getUid());
-//                                                      //  server.child(user.getUid()).child("chat_string").setValue("null");
-////                                                        server.child(user.getUid()).push();
-//                                                        server.child(user.getUid()).child("data");
-////                                                        server.child(user.getUid()).child("data").push();
-//                                                        server.child(user.getUid()).child("frined_count");
-//                                                        server.child(user.getUid()).child("friend");
-////                                                        server.child(user.getUid()).child("friend").push();
-////                                                        server.child(user.getUid()).child("chat_data");
-////                                                        server.child(user.getUid()).child("chat_data").push();
-                                                        startActivity(new Intent(signup_firebase.this,MainActivity.class));
+                                                        startActivity(new Intent(signup_firebase.this,configure.class));
 
                                                         finish();
                                                     }

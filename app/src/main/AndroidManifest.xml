@@ -12,9 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".chat"></activity>
+        <activity android:name=".configure"></activity>
+        <activity android:name=".chat" />
         <activity android:name=".login_firebase" />
-        <activity android:name=".signup_firebase"></activity>
+        <activity android:name=".signup_firebase" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -42,7 +42,7 @@ public class home extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        server.addValueEventListener(new ValueEventListener() {
+        server.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 examplelist.clear();
@@ -100,7 +100,7 @@ public class home extends Fragment {
              madapter.setonitemclickedlistner(new home_adapter.OnitemClickListner() {
                  @Override
                  public void onItemClick(int position) {
-                     Toast.makeText(context,"Clicked_on_friend",Toast.LENGTH_LONG).show();
+
                      Intent intent = new Intent(context,chat.class);
                      intent.putExtra("name_of_frined",examplelist.get(position).getName());
                      intent.putExtra("uid_of_frined",examplelist.get(position).getUid());
