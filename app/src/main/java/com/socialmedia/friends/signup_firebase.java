@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +28,7 @@ public class signup_firebase extends AppCompatActivity {
    private FirebaseAuth mAuth;
    Button singup,singin;
    EditText email,password,name;
+   ProgressBar pb;
     DatabaseReference server = FirebaseDatabase.getInstance().getReference();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,6 @@ public class signup_firebase extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         setContentView(R.layout.activity_signup_firebase);
-
         initialise();
 
         mAuth=FirebaseAuth.getInstance();
@@ -49,6 +50,7 @@ public class signup_firebase extends AppCompatActivity {
         singup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pb.setVisibility(View.VISIBLE);
                 String email_f=email.getText().toString();
                 String pass = password.getText().toString();
                 if(TextUtils.isEmpty(email_f))
@@ -95,7 +97,7 @@ public class signup_firebase extends AppCompatActivity {
 
                                 } else {
                                     Toast.makeText(signup_firebase.this, "Failed", Toast.LENGTH_SHORT).show();
-
+                                    pb.setVisibility(View.INVISIBLE);
                                 }
                             }
                         });
@@ -114,8 +116,11 @@ public class signup_firebase extends AppCompatActivity {
 
 
     private void initialise() {
+
+        pb= findViewById(R.id.progressBar3);
+        pb.setVisibility(View.INVISIBLE);
         singup=findViewById(R.id.singup);
-        singin=findViewById(R.id.singin);
+        singin=findViewById(R.id.signin);
         email=findViewById(R.id.email);
         password=findViewById(R.id.password);
         name = findViewById(R.id.name);

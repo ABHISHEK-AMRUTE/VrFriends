@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#004BA0</color>
     <color name="colorAccent">#D81B60</color>
     <color name="light_blue">#63a4ff</color>
+    <color name="selected_image">#951976D2</color>
+    <color name="unselected_image">#FFFFFF</color>
 </resources>

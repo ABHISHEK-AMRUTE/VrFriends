@@ -72,7 +72,7 @@ public class login_firebase extends AppCompatActivity {
         });
     }
     private void initialise() {
-        singin=findViewById(R.id.singin);
+        singin=findViewById(R.id.signin);
         singup=findViewById(R.id.singup);
         email=findViewById(R.id.email);
         password=findViewById(R.id.password);

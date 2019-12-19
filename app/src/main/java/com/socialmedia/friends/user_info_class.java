@@ -2,12 +2,30 @@ package com.socialmedia.friends;
 
 public class user_info_class {
 
-
-    String name,image_url,uid;
-    public user_info_class(String name,String image_url,String uid)
+    int image_code;
+    String name,image_url,uid,bio;
+    public user_info_class(String name,String image_url,String uid,int image_code ,String bio)
     {   this.uid=uid;
         this.name=name;
         this.image_url=image_url;
+        this.image_code= image_code;
+        this.bio =bio;
+    }
+
+    public int getImage_code() {
+        return image_code;
+    }
+
+    public void setImage_code(int image_code) {
+        this.image_code = image_code;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public String getName() {

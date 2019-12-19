@@ -1,6 +1,7 @@
 package com.socialmedia.friends;
 
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -112,9 +114,39 @@ public class findfriend_adapter extends RecyclerView.Adapter<findfriend_adapter.
 
         final user_info_class currentitem =mexamplelist.get(i);
         // holder.featured_image.setImageResource(R.drawable.home);
-        Picasso.get().load( "https://api.androidhive.info/images/sample.jpg").into(holder.featured_image);
+       // Picasso.get().load( "https://api.androidhive.info/images/sample.jpg").into(holder.featured_image);
         holder.owner_name.setText(currentitem.getName());
         frn_uid = currentitem.getUid();
+        int imagecode= currentitem.getImage_code();
+        if(imagecode == 1)
+        {
+            holder.featured_image.setImageResource(R.drawable.boy);
+        }else  if(imagecode == 2)
+        {holder.featured_image.setImageResource(R.drawable.btw);
+
+        }else if(imagecode == 3)
+        {holder.featured_image.setImageResource(R.drawable.girl);
+
+        }else if(imagecode == 4)
+        { holder.featured_image.setImageResource(R.drawable.gtw);
+
+        }else if(imagecode == 5)
+        {holder.featured_image.setImageResource(R.drawable.man);
+
+        }else if(imagecode ==6 )
+        {
+            holder.featured_image.setImageResource(R.drawable.manfive);
+        }else if(imagecode == 7)
+        {
+            holder.featured_image.setImageResource(R.drawable.manth);
+        }else if(imagecode ==8 )
+        {
+            holder.featured_image.setImageResource(R.drawable.mantw);
+        }else if(imagecode ==9 )
+        {
+            holder.featured_image.setImageResource(R.drawable.mfo);
+        }
+
     }
 
 

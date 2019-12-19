@@ -1,22 +1,15 @@
 package com.socialmedia.friends;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,22 +18,32 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
+public class profile_show extends AppCompatActivity {
+    String name,bio_data,dob_data,tosee_uid;
 
-public class profile extends Fragment {
-    String name,email,bio_data,dob_data;
-    Uri photoUrl;
-    ProgressBar pb;
     TextView bio;
     int friend_count = 0;
-    TextView name_f,email_f,friend,dob;
+    TextView name_f,friend,dob;
     int imagecode=1;
     ImageView imageView;  FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference server = FirebaseDatabase.getInstance().getReference();
-    @Nullable
+ProgressBar pb;
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile_show);
+        imageView = findViewById(R.id.imageView);
+        bio = findViewById(R.id.bio);
+        dob = findViewById(R.id.dob);
+        friend = findViewById(R.id.frn);
+
+ pb =findViewById(R.id.progressBar);
+
+        name_f = findViewById(R.id.name);
+        tosee_uid =getIntent().getStringExtra("uid");
+
+
 
         server.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -49,16 +52,16 @@ public class profile extends Fragment {
                 for (DataSnapshot childl : dataSnapshot.getChildren()) {
 
                     if(!childl.child("data").child("uid").getValue().equals("nulll")) {
-                        if(childl.child("data").child("uid").getValue().toString().equals(user.getUid())) {
+                        if(childl.child("data").child("uid").getValue().toString().equals(tosee_uid)) {
 
-                              imagecode = Integer.parseInt(childl.child("data").child("image_code").getValue().toString());
+                            imagecode = Integer.parseInt(childl.child("data").child("image_code").getValue().toString());
                             friend_count = Integer.parseInt(childl.child("frined_count").child("count").getValue().toString());
                             bio_data = childl.child("data").child("bio").getValue().toString();
-                             name = childl.child("data").child("name").getValue().toString();
-                             dob_data = childl.child("data").child("dob").getValue().toString();
-                             friend.setText(friend_count+"");
-                             dob.setText(dob_data);
-                             name_f.setText(name);
+                            name = childl.child("data").child("name").getValue().toString();
+                            dob_data = childl.child("data").child("dob").getValue().toString();
+                            friend.setText(friend_count+"");
+                            dob.setText(dob_data);
+                            name_f.setText(name);
                             bio.setText(bio_data);
 
                             if(imagecode == 1)
@@ -106,43 +109,6 @@ public class profile extends Fragment {
 
             }
         });
-
-        return inflater.inflate(R.layout.frame_profile,container,false);
-
-
-    }
-
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        imageView = getView().findViewById(R.id.imageView);
-        bio = getView().findViewById(R.id.bio);
-        dob = getView().findViewById(R.id.dob);
-        friend = getView().findViewById(R.id.frn);
-
-        pb=getView().findViewById(R.id.p);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        name_f = getView().findViewById(R.id.name);
-        email_f =getView().findViewById(R.id.email);
-
-
-
-
-        email_f.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getContext(),login_firebase.class));
-            }
-        });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
 
     }
 }

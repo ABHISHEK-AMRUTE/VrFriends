@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,8 @@ public class home extends Fragment {
     home_adapter madapter;
     RecyclerView.LayoutManager layoutManager;
     ArrayList<user_info_class> examplelist =new ArrayList<user_info_class>();
-
+    ProgressBar pb ;
+    TextView txt;
     Context context;
     static int count=9999999;
     String text = "Frineds list : \n";
@@ -58,8 +60,8 @@ public class home extends Fragment {
                                   String st = "friend";
                                   st = st + x;
                                   String temp = childl.child("friend").child(st).getValue().toString();
-                                 // text = text + "NAME : " + childl.child("friend").child(temp).getValue().toString() + "\n";
-                                  examplelist.add(new user_info_class(childl.child("friend").child(temp).getValue().toString(),"scsc",childl.child("friend").child(st).getValue().toString()));
+                                  // text = text + "NAME : " + childl.child("friend").child(temp).getValue().toString() + "\n";
+                                  examplelist.add(new user_info_class(childl.child("friend").child(temp).getValue().toString(),"scsc",childl.child("friend").child(st).getValue().toString(),Integer.parseInt(childl.child("friend").child("image_code"+st).getValue().toString()),"nulllll"));
                                   madapter.notifyDataSetChanged();
                               }
 
@@ -69,9 +71,15 @@ public class home extends Fragment {
 
 
                 }
-
-                Toast.makeText(context,""+count,Toast.LENGTH_LONG).show();
-                 //txt.setText(text);
+                if(examplelist.isEmpty()){
+                    pb.setVisibility(View.INVISIBLE);
+                    txt.setText("No friends Yet!");
+               }
+                else
+                {
+                    pb.setVisibility(View.INVISIBLE);
+                    txt.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
@@ -87,7 +95,8 @@ public class home extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = getView().findViewById(R.id.recyler);
-
+        pb = getView().findViewById(R.id.pr);
+        txt =getView().findViewById(R.id.Information);
         recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager

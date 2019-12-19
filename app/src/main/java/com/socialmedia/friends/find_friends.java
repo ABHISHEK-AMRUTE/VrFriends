@@ -1,9 +1,12 @@
 package com.socialmedia.friends;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +30,8 @@ import java.util.ArrayList;
 public class find_friends extends Fragment {
     findfriend_adapter madapter;
     String frined_count = "friend";
+    ProgressBar pb;
+    TextView txt_in;
     static  int count;
     ArrayList<user_info_class> examplelist =new ArrayList<user_info_class>();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -49,7 +54,8 @@ public class find_friends extends Fragment {
         recyclerView.setLayoutManager(gridLayoutManager);
 
 
-
+        pb= getView().findViewById(R.id.progressBar4);
+        txt_in = getView().findViewById(R.id.information);
 
         madapter = new findfriend_adapter(examplelist);
        recyclerView.setAdapter(madapter);
@@ -59,6 +65,11 @@ public class find_friends extends Fragment {
        madapter.setonitemclickedlistner(new findfriend_adapter.OnitemClickListner() {
            @Override
            public void onItemClick(int position) {
+                  Intent in =new Intent(getContext(),profile_show.class);
+                  in.putExtra("uid",examplelist.get(position).getUid());
+                  startActivity(in);
+
+
 
            }
 
@@ -84,9 +95,10 @@ public class find_friends extends Fragment {
 
                }
                server.child(user.getUid()).child("frined_count").child("count").setValue(count);
+               server.child(user.getUid()).child("friend").child("image_code"+frined_count).setValue(examplelist.get(position).getImage_code());
                frined_count ="friend";
                server.child(t).child("start_from").setValue(get_cc(user.getUid(),examplelist.get(position).getUid()));
-
+               Toast.makeText(getContext(), "Added to your friend list....", Toast.LENGTH_SHORT).show();
            }
        });
     }
@@ -105,13 +117,15 @@ public class find_friends extends Fragment {
                     String str =childl.child("data").child("uid").getValue().toString();
 
                     if(!str.matches("nulll")) {
-                        if(!childl.child("data").child("name").getValue().toString().equals(user.getDisplayName())&&childl.child("friend").exists()) {
+                        if(!childl.child("data").child("name").getValue().toString().equals(user.getDisplayName())) {
                             if(!childl.child("friend").child(user.getUid()).exists())
-                            examplelist.add(new user_info_class(childl.child("data").child("name").getValue().toString(), "scsc", str));
+               examplelist.add(new user_info_class(childl.child("data").child("name").getValue().toString(), "scsc", str,Integer.parseInt(childl.child("data").child("image_code").getValue().toString()),childl.child("data").child("bio").getValue().toString()));
                         }
                     }
                     madapter.notifyDataSetChanged();
                 }
+                pb.setVisibility(View.INVISIBLE);
+                txt_in.setVisibility(View.INVISIBLE);
 
             }
 

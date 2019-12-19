@@ -8,6 +8,7 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 String name = user.getDisplayName();
                 String email = user.getEmail();
                 Uri photoUrl = user.getPhotoUrl();
-                Toast.makeText(this, "Name: "+name+" Email : "+email, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Name: "+name+" Email : "+email, Toast.LENGTH_SHORT).show();
 
 
 
@@ -82,5 +83,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.log_out, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.mybutton) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(MainActivity.this,login_firebase.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
