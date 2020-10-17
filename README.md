@@ -1,5 +1,6 @@
 # VrFriends
 This app is a one-to-one chat application(currently only for android).  
+Connect with friends anonymously.
 
 # Building blocks :
 1 : Java,  
